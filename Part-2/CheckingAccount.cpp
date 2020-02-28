@@ -6,28 +6,45 @@ using namespace std;
 // constructor initializes balance and transaction fee
 CheckingAccount::CheckingAccount( double initialBalance, double fee ) : Account( initialBalance ) 
 {
-	// your code
+	if (fee<0)
+		transactionFee=0;
+	else
+		transactionFee=fee;
 } 
 
 // credit (add) an amount to the account balance and charge fee
 void CheckingAccount::credit( double amount )
 {
-	// your code
+	Account::credit(amount);
+	chargeFee();
 } 
 
 // debit (subtract) an amount from the account balance and charge fee
 bool CheckingAccount::debit( double amount )
 {
-	// your code
+	if (Account::debit(amount)){
+		Account::debit(amount);
+		chargeFee();
+		return true;
+	}
+	else
+		return false;
+	
 }
 
 // subtract transaction fee
 void CheckingAccount::chargeFee()
 {
-	// your code
+	setBalance(getBalance()-transactionFee);
 }
 
 void CheckingAccount::display(ostream & os) const
 {
-	// your code
+	
+	os<<"Account type: Checking"<<endl;
+	Account::display(cout);
+	
+	cout.setf(ios::fixed|ios::right);
+	cout.precision(2);
+	os<<"Transaction fee: "<<transactionFee<<endl;
 }
